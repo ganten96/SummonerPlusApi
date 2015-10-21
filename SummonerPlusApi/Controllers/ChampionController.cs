@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SummonerPlusApi.Models;
 using System;
 using System.Collections.Generic;
@@ -14,26 +15,66 @@ namespace SummonerPlusApi.Controllers
 {
     public class ChampionController : ApiController
     {
-        public List<Champion> GetChampions()
+        public Dictionary<string, Champion> GetChampions()
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
-            using(var client = new HttpClient())
+            using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(@"https://global.api.pvp.net/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var response = client.GetAsync("api/lol/static-data/na/v1.2/champion?api_key=" + apiKey);
-
-                List<Champion> champs;
-                if(response != null)
+                var response = client.GetAsync("api/lol/static-data/na/v1.2/champion?api_key=" + apiKey).Result;
+                if (response != null)
                 {
-                    ChampionContainer champions = response.Result.Content.ReadAsAsync<ChampionContainer>().Result;
-                    champs = champions.Data;
-                    return champs;
+                    try
+                    {
+                        HttpContent content = response.Content;
+                        string jsonContent = content.ReadAsStringAsync().Result;
+                        var jObj = JObject.Parse(jsonContent);
+                        var data = (JObject)jObj["data"];
+                        Dictionary<string, Champion> champions = JsonConvert.DeserializeObject<Dictionary<string, Champion>>(data.ToString());
+                        return champions;
+                    }
+                    catch (Exception ex)
+                    {
+                        string exception = ex.Message;
+                        return null;
+                    }
                 }
                 return null;
             }
         }
+
+        //public Champion GetChampion(int championId)
+        //{
+        //    string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(@"https://global.api.pvp.net/");
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        //        var response = client.GetAsync("api/lol/static-data/na/v1.2/champion?api_key=" + apiKey).Result;
+        //        if (response != null)
+        //        {
+        //            try
+        //            {
+        //                HttpContent content = response.Content;
+        //                string jsonContent = content.ReadAsStringAsync().Result;
+        //                var jObj = JObject.Parse(jsonContent);
+        //                var data = (JObject)jObj["data"];
+        //                Dictionary<string, Champion> champions = JsonConvert.DeserializeObject<Dictionary<string, Champion>>(data.ToString());
+        //                return champions;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                string exception = ex.Message;
+        //                return null;
+        //            }
+        //        }
+        //        return null;
+        //    }
+        //}
     }
 }
