@@ -46,7 +46,7 @@ namespace SummonerPlusApi.Controllers
             }
         }
 
-        public Champion GetChampion(int championId)
+        public IHttpActionResult GetChampion(int championId)
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
             using (var client = new HttpClient())
@@ -65,15 +65,15 @@ namespace SummonerPlusApi.Controllers
                         var jObj = JObject.Parse(jsonContent);
                         var data = (JObject)jObj["data"];
                         Dictionary<string, Champion> champions = JsonConvert.DeserializeObject<Dictionary<string, Champion>>(data.ToString());
-                        return champions.Values.FirstOrDefault();
+                        return Ok(champions.Values.FirstOrDefault());
                     }
                     catch (Exception ex)
                     {
                         string exception = ex.Message;
-                        return null;
+                        return InternalServerError();
                     }
                 }
-                return null;
+                return NotFound();
             }
         }
     }

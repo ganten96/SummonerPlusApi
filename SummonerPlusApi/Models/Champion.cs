@@ -30,11 +30,15 @@ namespace SummonerPlusApi.Models
 
         [JsonProperty(PropertyName = "tags")]
         public List<string> Tags { get; set; }
+        
 
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
         [JsonProperty(PropertyName = "info")]
         public ChampionInfo Info { get; set; }
+
+        [JsonProperty(PropertyName = "stats")]
+        public ChampionStats Stats { get; set; }
     }
 }
