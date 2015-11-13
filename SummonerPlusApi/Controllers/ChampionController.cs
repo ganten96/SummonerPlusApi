@@ -46,7 +46,9 @@ namespace SummonerPlusApi.Controllers
             }
         }
 
-        public IHttpActionResult GetChampion(int championId)
+        [Route("api/champion/{championId}")]
+        [HttpGet]
+        public IHttpActionResult Champion(int championId)
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
             using (var client = new HttpClient())
@@ -63,9 +65,10 @@ namespace SummonerPlusApi.Controllers
                         HttpContent content = response.Content;
                         string jsonContent = content.ReadAsStringAsync().Result;
                         var jObj = JObject.Parse(jsonContent);
-                        var data = (JObject)jObj["data"];
-                        Dictionary<string, Champion> champions = JsonConvert.DeserializeObject<Dictionary<string, Champion>>(data.ToString());
-                        return Ok(champions.Values.FirstOrDefault());
+                        var data = (JObject)jObj;
+                        Champion stats = JsonConvert.DeserializeObject<Champion>(data.ToString());
+                        //Dictionary<string, Champion> champions = JsonConvert.DeserializeObject<Dictionary<string, Champion>>(data.ToString());
+                        return Ok(stats);
                     }
                     catch (Exception ex)
                     {

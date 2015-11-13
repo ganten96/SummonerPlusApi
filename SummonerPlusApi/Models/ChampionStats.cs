@@ -10,13 +10,13 @@ namespace SummonerPlusApi.Models
     public class ChampionStats
     {
         [JsonProperty("attackrange")]
-        public string AttackRange { get; set; }
+        public decimal AttackRange { get; set; }
 
         [JsonProperty("mpperlevel")]
-        public int MpPerLevel { get; set; }
+        public decimal MpPerLevel { get; set; }
         
         [JsonProperty("mp")]
-        public string Mp { get; set; }
+        public decimal Mp { get; set; }
 
         [JsonProperty("attackdamage")]
         public decimal AttackDamage { get; set; }
@@ -25,7 +25,7 @@ namespace SummonerPlusApi.Models
         public decimal Hp { get; set; }
 
         [JsonProperty("hpperlevel")]
-        public int HpPerLevel { get; set; }
+        public decimal HpPerLevel { get; set; }
 
         [JsonProperty("attackdamageperlevel")]
         public decimal AttackDamagePerLevel { get; set; }
@@ -55,13 +55,13 @@ namespace SummonerPlusApi.Models
         public decimal SpellBlock { get; set; }
 
         [JsonProperty("movespeed")]
-        public int MoveSpeed { get; set; }
+        public decimal MoveSpeed { get; set; }
 
         [JsonProperty("attackspeedoffset")]
         public decimal AttackSpeedOffset { get; set; }
 
         [JsonProperty("crit")]
-        public string Crit { get; set; }
+        public decimal Crit { get; set; }
 
         [JsonProperty("hpregenperlevel")]
         public decimal HpRegenPerLevel { get; set; }
