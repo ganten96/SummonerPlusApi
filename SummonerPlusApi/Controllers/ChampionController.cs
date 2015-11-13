@@ -55,7 +55,7 @@ namespace SummonerPlusApi.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var response = client.GetAsync("api/lol/static-data/na/v1.2/champion?api_key=" + apiKey).Result;
+                var response = client.GetAsync("api/lol/static-data/na/v1.2/champion/" + championId + "?champData=all&api_key=" + apiKey).Result;
                 if (response != null)
                 {
                     try
