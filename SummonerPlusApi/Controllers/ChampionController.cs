@@ -48,7 +48,7 @@ namespace SummonerPlusApi.Controllers
 
         [Route("api/champion/{championId}")]
         [HttpGet]
-        public IHttpActionResult Champion(int championId)
+        public IHttpActionResult Champion(long championId)
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
             using (var client = new HttpClient())
