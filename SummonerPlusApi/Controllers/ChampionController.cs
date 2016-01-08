@@ -79,5 +79,6 @@ namespace SummonerPlusApi.Controllers
                 return NotFound();
             }
         }
+        
     }
 }
