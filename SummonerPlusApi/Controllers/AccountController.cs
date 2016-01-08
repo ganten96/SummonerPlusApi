@@ -17,13 +17,20 @@ using SummonerPlusApi.Models;
 using SummonerPlusApi.Providers;
 using SummonerPlusApi.Results;
 using System.Configuration;
-
+using SummonerPlusApi.DB;
 namespace SummonerPlusApi.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
+        private SummonerDb db;
+
+        public AccountController(SummonerDb db)
+        {
+            this.db = db;
+        }
+
         private string apiKey = ConfigurationManager.AppSettings["ApiKey"];
         [Route("Create"), HttpPost]
         public IHttpActionResult CreateAccount(LeagueUser user)
