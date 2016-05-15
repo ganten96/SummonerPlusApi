@@ -27,16 +27,16 @@ namespace SummonerPlusApi.DB
             }
         }
 
-        public long CreateAccount(LeagueUser u)
+        public bool CreateAccount(LeagueUser u)
         {
             try
             {
-                return db.RunProcedure<long>("splus.usp_InsertSummoner", new
+                return db.ExecuteProcedure("splus.usp_InsertSummoner", new
                 {
                     SummonerID = u.SummonerID,
                     Username = u.SummonerName,
                     Password = u.Password
-                }).FirstOrDefault();
+                });
             }
             catch(SqlException ex)
             {

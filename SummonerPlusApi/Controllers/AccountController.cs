@@ -76,12 +76,15 @@ namespace SummonerPlusApi.Controllers
             user.Password = hashPassword(user.Password);
             try
             {
-                long summonerID = db.CreateAccount(user);
-                if (summonerID > 0)
+                bool isCreated = db.CreateAccount(user);
+                if (isCreated)
                 {
-                    return Ok(summonerID);
+                    return Ok(isCreated);
                 }
-                return Unauthorized();
+                else
+                {
+                    return Ok(false);
+                }
             }
             catch(Exception ex)
             {
