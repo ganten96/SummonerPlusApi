@@ -213,9 +213,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+<<<<<<< HEAD
+    <Compile Include="Controllers\GamesController.cs" />
+=======
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="DB\DynamicDb.cs" />
     <Compile Include="DB\SummonerDb.cs" />
+>>>>>>> origin/master
     <Compile Include="Models\Champion.cs" />
     <Compile Include="Controllers\ChampionController.cs" />
     <Compile Include="Models\ChampionContainer.cs" />
@@ -279,13 +283,6 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
