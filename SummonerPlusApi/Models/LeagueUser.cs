@@ -8,7 +8,7 @@ namespace SummonerPlusApi.Models
 {
     public class LeagueUser
     {
-        [JsonProperty("SummonerName")]
+        [JsonProperty("name")]
         public string SummonerName { get; set; }
 
         [JsonProperty("id")]

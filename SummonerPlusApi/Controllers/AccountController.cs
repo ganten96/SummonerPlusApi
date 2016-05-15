@@ -6,11 +6,12 @@ using System.Configuration;
 using SummonerPlusApi.DB;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SummonerPlusApi.Controllers
 {
     //[Authorize]
-    [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private SummonerDb db;
@@ -22,17 +23,25 @@ namespace SummonerPlusApi.Controllers
 
         private string apiKey = ConfigurationManager.AppSettings["ApiKey"];
 
-        [Route("Verify"), HttpPost]
+        [Route("api/account/verify/{summonerName}"), HttpGet]
         public IHttpActionResult VerifySummonerName(string summonerName)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(@"https://na.api.pvp.net/api/lol/na/v1.4/");
-                var result = client.GetAsync("summoner/by-name/" + summonerName + "?api_key=" + apiKey).Result;
+                var result = client.GetAsync("summoner/by-name/" + summonerName.Trim().ToLower() + "?api_key=" + apiKey).Result;
                 
                 try
                 {
-                    LeagueUser user = result.Content.ReadAsAsync<LeagueUser>().Result;
+                    HttpContent content = result.Content;
+                    string jsonContent = content.ReadAsStringAsync().Result;
+                    var jObj = JObject.Parse(jsonContent);
+                    var data = (JObject)jObj[summonerName.Trim().ToLower()];
+                    LeagueUser user = JsonConvert.DeserializeObject<LeagueUser>(data.ToString());
+                    if(user == null || user.SummonerID == 0)
+                    {
+                        return Unauthorized();
+                    }
                     return Ok(user);
                 }
                 catch(Exception ex)
@@ -42,16 +51,16 @@ namespace SummonerPlusApi.Controllers
             }
         }
 
-        [Route("Login"), HttpPost]
+        [Route("api/account/login"), HttpPost]
         public IHttpActionResult LogIn(LeagueUser user)
         {
             user.Password = hashPassword(user.Password);
             try
             {
-                long summonerId = db.GetUser(user);
-                if(summonerId > 0)
+                bool isLoggedIn = db.LogIn(user);
+                if(isLoggedIn)
                 {
-                    return Ok(summonerId);
+                    return Ok(isLoggedIn);
                 }
                 return Unauthorized();
             }
@@ -61,7 +70,7 @@ namespace SummonerPlusApi.Controllers
             }
         }
 
-        [Route("Create"), HttpPost]
+        [Route("api/account/create"), HttpPost]
         public IHttpActionResult CreateAccount(LeagueUser user)
         {
             user.Password = hashPassword(user.Password);

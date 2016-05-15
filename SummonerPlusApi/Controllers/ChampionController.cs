@@ -15,6 +15,7 @@ namespace SummonerPlusApi.Controllers
 {
     public class ChampionController : ApiController
     {
+        [Route("api/champion/champions")]
         public IHttpActionResult GetChampions()
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
@@ -46,8 +47,7 @@ namespace SummonerPlusApi.Controllers
             }
         }
 
-        [Route("api/champion/{championId}")]
-        [HttpGet]
+        [HttpGet, Route("api/champion/{championId}")]
         public IHttpActionResult Champion(long championId)
         {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"].ToString();
