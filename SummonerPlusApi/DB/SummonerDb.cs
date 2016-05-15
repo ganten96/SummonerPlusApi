@@ -15,6 +15,18 @@ namespace SummonerPlusApi.DB
             db = new DynamicDb();
         }
 
+        public long GetUser(LeagueUser user)
+        {
+            try
+            {
+                return db.RunProcedure<long>("splus.usp_CheckUserCredentials").FirstOrDefault();
+            }
+            catch(SqlException ex)
+            {
+                throw;
+            }
+        }
+
         public long CreateAccount(LeagueUser u)
         {
             try

@@ -13,6 +13,7 @@ namespace SummonerPlusApi.Models
 
         [JsonProperty("id")]
         public long SummonerID { get; set; }
+        
         //comes in hashed.
         public string Password { get; set; }
 
